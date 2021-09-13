@@ -3,8 +3,10 @@
 ## ESP32 module compatibility and pressure sensor tested in the nautical barometer project
 
 Almost every ESP32 development board has chosen different pins and which signals to break out. 
-The ESP32 adapter board have tried to find common ground for the SPI- and I2C interface GPIO signals 
-for some standard ESP32 modules. Any aspiring ESP module to fit must have all the SPI GPIO on exact all physical pins 
+
+I have tried to find commonality for the SPI- and I2C interface signals for some standard ESP32 modules.
+
+Any aspiring ESP module to fit must have all the SPI GPIO on exact all physical pins 
 according to the `adapter board schematic` found [here](https://github.com/DebinixTeam/esp32-adapter-board-v1x/blob/master/kicad/esp32-adapter-schematic-v1x.pdf).
 
 ## GPIO interface
