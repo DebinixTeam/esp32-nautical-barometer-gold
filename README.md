@@ -24,6 +24,10 @@ As a minimum, you need the following primary material to get started.
 
 The ESP32 adapter board is documented [here](https://github.com/DebinixTeam/esp32-adapter-board-v1x.git). 
 
+## Adapter board and ESP32 module compatibility
+
+Find the tested ESP32 modules and pressure sensor in the nautical barometer project [here](./hw-compatibility-list.md).
+
 ## Credits
 
 Two excellent Arduino libraries made this project possible.
