@@ -9,21 +9,29 @@ I have tried to find commonality for the SPI- and I2C interface signals for some
 Any aspiring ESP module to fit must have all the SPI GPIO on exact all physical pins 
 according to the `adapter board schematic` found [here](https://github.com/DebinixTeam/esp32-adapter-board-v1x/blob/master/kicad/esp32-adapter-schematic-v1x.pdf).
 
-## GPIO interface
+## SPI GPIO interface configuration
 
 The list for 2.8" TFT SPI 240x320 shows the used GPIO interface, but TFT_MISO is not connected to the ESP32's but is available at an auxiliary connector (J3).
 
+        TFT_MISO        GPIO 19
         TFT_MOSI        GPIO 23
         TFT_SCLK        GPIO 18
         TFT_CS          GPIO 27
         TFT_DC          GPIO 26
         TFT_RST         GPIO 4
 
+This display configuration is likely the only configuration necessary for various ESP32 development boards. 
+With this, no more fuzz with SPI pin assignments - hopefully.
+
+## I2C GPIO interface
+
+The well-established SDA/SCL does not need any additional configuration.
+
 ## ESP32 modules
 
 ### 20-pins
 
-* `ESP32 TinyPico` module from Seon a.k.a. [Unepected Maker](https://www.amazon.com/Unexpected-Maker-TinyPICO-USB-C/dp/B0917V5YL3/ref=sr_1_1?dchild=1&m=A2V4DOMZNGA67Y&marketplaceID=ATVPDKIKX0DER&qid=1630760075&refinements=p_4%3AUnexpected%2BMaker&s=merchant-items&sr=1-1&th=1)
+* `ESP32 TinyPico` module from [Seon Rozenblum](https://unexpectedmaker.com). Buy it [here](https://www.amazon.com/Unexpected-Maker-TinyPICO-USB-C/dp/B0917V5YL3/ref=sr_1_1?dchild=1&m=A2V4DOMZNGA67Y&marketplaceID=ATVPDKIKX0DER&qid=1630760075&refinements=p_4%3AUnexpected%2BMaker&s=merchant-items&sr=1-1&th=1)
 
 ### 30-pins
 
@@ -53,7 +61,7 @@ The list for 2.8" TFT SPI 240x320 shows the used GPIO interface, but TFT_MISO is
 ## Tested hardware combinations for the `nautical barometer gold` project on the adapter board v1.x
 
         Yes: Functional
-        (Yes): Tested, but found some issues
+        Yes*: Tested but needs a minor manual configuration change
         No: Does not work at all, major issues
 
 
@@ -79,7 +87,21 @@ The list for 2.8" TFT SPI 240x320 shows the used GPIO interface, but TFT_MISO is
 
 | ESP32 `12+16-pins` module | Pomoroni BME680 | Sparkfun BME680 | Adafruit BME680 | Generic CJMCU-680
 | ------------------------|-----------------|-----------------|-------------------|-------------------
-| Sparkfun                | Yes             | Not tested      | Not tested        | Not tested
+| Sparkfun                | Yes*            | Not tested      | Not tested        | Not tested
+
+
+## Manual configuration changes
+
+`Sparkfun's ESP32 Thing Plus` does not use Arduino's more common SPI assignments. 
+Thus, open Arduino's libraries folder and change `MOSI` and `SCK` numbers to correct this.
+
+Edit `User_Setup.h` in the libraries folder `TFT_eSPI`, like so:
+
+        TFT_MOSI        GPIO 18
+        TFT_SCLK        GPIO 5
+
+
+
 
 
 
