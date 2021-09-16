@@ -12,7 +12,7 @@ This repository maintains the Arduino code for the project.
 
 ## Instructables
 
-This [instructable](https://www.instructables.com) documents the project in detail.
+This [instructable](https://www.instructables.com/Your-Nautical-Barometer-Gold-for-Precise-Weather-F/) documents the project in detail.
 
 ## Hardware
 
