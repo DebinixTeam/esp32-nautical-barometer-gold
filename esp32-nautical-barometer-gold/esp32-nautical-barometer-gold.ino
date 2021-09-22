@@ -4,6 +4,8 @@ License: CC BY-SA 4.0
 https://creativecommons.org/licenses/by-sa/4.0/
 
 Source code repository: https://github.com/DebinixTeam/esp32-nautical-barometer-gold
+Actual ESP32, BME680 sensor, and 'adpter board' compatibility:
+https://github.com/DebinixTeam/esp32-nautical-barometer-gold/blob/master/hw-compatibility-list.md
 
 Tested BME680 sensor: Pomoroni I2C BME680 sensor
 Display: SPI 2.8" TFT SPI 240x320 v1.2 (SKU:MSP2807) www.lcdwiki.com
@@ -12,7 +14,7 @@ Default serial baudrate: 9600
 Other settings:
   IDE->Tools 'Upload Speed: 921 600'
   IDE->Tools 'Boards: 'ESP32 Dev Module (30pin)', 'TinyPICO v1' (20pin), 
-             'Sparkfun ESP32 Thing Plus (12pin+16pin)', DOIT ESP32 DEVKIT V1(36pin)'.
+             'Sparkfun ESP32 Thing Plus* (12pin+16pin)', DOIT ESP32 DEVKIT V1(36pin)'.
 
 Breadboard Wiring (IO aka GPIO)
 -------------------------------
@@ -28,6 +30,11 @@ IO4/RST      -> TFT_SPI #4/RESET
 IO26/DC      -> TFT_SPI #5/DC
 IO23/MOSI    -> TFT_SPI #6/MOSI
 IO18/SCK     -> TFT_SPI #7/SCK
+
+*) Change in 'TFT_eSPI/User_Setup.h' for 'Sparkfun ESP32 Thing Plus'
+(non-standard Arduino SPI) as:
+IO18/MOSI    -> TFT_SPI #6/MOSI
+IO5/SCK      -> TFT_SPI #7/SCK
 
 IO#Name Power Wiring ESP32 (3V3) <--> TFT_SPI & BME680
 
@@ -185,9 +192,9 @@ void setup(void) {
 void loop() {
 
     int32_t  temp = 0, humidity = 0, pressure = 0, gas = 0;
-    char bufpres[20];                        // sprintf text buffer
-    float fpres;
-    uint8_t dpres;
+    char bufpres[20] = "";                        // sprintf text buffer
+    float fpres ;
+    uint8_t dpres ;
     int16_t array_cnt = 0;
 
     delay(5000);  // Wait 5 s before acquiring the new BME680 environmental data
@@ -200,9 +207,9 @@ void loop() {
     BME680.getSensorData(temp, humidity, pressure , gas);  // Get real data, ignore gas value
 
 
-    #if MYDEBUG == 1
-      debug_sensor_bme680(temp, humidity, pressure, rtc.getMinute(), rtc.getSecond() );
-    #endif
+    
+    debug_sensor_bme680(temp, humidity, pressure, rtc.getMinute(), rtc.getSecond() );
+    
       
     //
     // Check if it's time to update values, once every hour (every minute for MYDEBUG)
@@ -285,7 +292,7 @@ void loop() {
         sprintf(bufpres, "  %8.2f mb", fpres);     // Pressure hPascals=mbar
     }
 
-    debugln(bufpres);
+    Serial.println(bufpres);
 
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
     tft.setFreeFont(CF_OL24);                 // Select the font
